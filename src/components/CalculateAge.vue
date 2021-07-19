@@ -34,24 +34,27 @@
       align="center"
       style="text-align: left; width: 80%; border-spacing: 0"
     >
-      <tr>
-        <th style="width: 30%">Name</th>
-        <th style="width: 35%">Date of Birth</th>
-        <th style="width: 35%">Age</th>
-      </tr>
+      <thead>
+        <tr>
+          <th style="width: 30%">Name</th>
+          <th style="width: 35%">Date of Birth</th>
+          <th style="width: 35%">Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="memberData in data" :key="memberData.key">
+          <td>
+            <p>{{ memberData.name }}</p>
+          </td>
 
-      <tr v-for="memberData in data" :key="memberData.key">
-        <td>
-          <p>{{ memberData.name }}</p>
-        </td>
-
-        <td>
-          <p>{{ memberData.date }}</p>
-        </td>
-        <td>
-          <p>{{ memberData.age }}</p>
-        </td>
-      </tr>
+          <td>
+            <p>{{ memberData.date }}</p>
+          </td>
+          <td>
+            <p>{{ memberData.age }}</p>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
