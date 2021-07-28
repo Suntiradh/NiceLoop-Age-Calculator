@@ -46,7 +46,6 @@
           <td>
             <p>{{ memberData.name }}</p>
           </td>
-
           <td>
             <p>{{ memberData.date }}</p>
           </td>
@@ -60,9 +59,10 @@
 </template>
 
 <script>
-import { db } from "../firebase";
+import { db } from ".././main";
 import moment from "moment";
 import format from "moment-duration-format";
+import firebase from "firebase";
 
 format(moment);
 
@@ -75,29 +75,40 @@ export default {
     };
   },
   created() {
-    db.collection("members").onSnapshot((snapshotChange) => {
-      this.data = [];
-      snapshotChange.forEach((doc) => {
-        let diff = moment(doc.data().date).diff(moment(), "milliseconds");
-        let duration = moment.duration(diff);
-        let result = duration.format().replace("-", "");
-        this.data.push({
-          key: doc.id,
-          name: doc.data().name,
-          date: doc.data().date,
-          age: result,
-        });
-      });
-    });
+    this.getData();
   },
   methods: {
     addMember() {
-      db.collection("members").add({
-        name: this.member.name,
-        date: this.member.date,
-      });
+      db.collection("membersAuth")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("members")
+        .add({
+          name: this.member.name,
+          date: this.member.date,
+        });
       this.member.name = "";
       this.member.date = "";
+    },
+    async getData() {
+      var todosRef = await db
+        .collection("membersAuth")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("members");
+
+      todosRef.onSnapshot((snapshotChange) => {
+        this.data = [];
+        snapshotChange.forEach((doc) => {
+          let diff = moment(doc.data().date).diff(moment(), "milliseconds");
+          let duration = moment.duration(diff);
+          let result = duration.format().replace("-", "");
+          this.data.push({
+            key: doc.id,
+            name: doc.data().name,
+            date: doc.data().date,
+            age: result,
+          });
+        });
+      });
     },
   },
 };
