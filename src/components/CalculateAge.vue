@@ -44,13 +44,24 @@
       <tbody>
         <tr v-for="memberData in data" :key="memberData.key">
           <td>
-            <p>{{ memberData.name }}</p>
+            <p v-if="!memberData.isEdit">{{ memberData.name }}</p>
+            <input v-else v-model="memberData.name" />
           </td>
           <td>
-            <p>{{ memberData.date }}</p>
+            <p v-if="!memberData.isEdit">{{ memberData.date }}</p>
+            <input v-else v-model="memberData.date" />
           </td>
           <td>
             <p>{{ memberData.age }}</p>
+          </td>
+          <td>
+            <button v-if="!memberData.isEdit" @click="setUpdate(memberData)">
+              Edit
+            </button>
+            <button v-else @click="updateMember(memberData)">Done</button>
+          </td>
+          <td>
+            <button @click="deleteMember(memberData.key)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -85,17 +96,50 @@ export default {
         .add({
           name: this.member.name,
           date: this.member.date,
+          isEdit: false,
         });
       this.member.name = "";
       this.member.date = "";
     },
+    setUpdate(memberData) {
+      db.collection("membersAuth")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("members")
+        .doc(memberData.key)
+        .update({
+          isEdit: true,
+        });
+    },
+    updateMember(memberData) {
+      db.collection("membersAuth")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("members")
+        .doc(memberData.key)
+        .update({
+          name: memberData.name,
+          date: memberData.date,
+          isEdit: false,
+        })
+        .then(alert("Updated"));
+    },
+    deleteMember(id) {
+      db.collection("membersAuth")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("members")
+        .doc(id)
+        .delete()
+        .then(alert("Delete Member Complete"))
+        .catch((err) => {
+          console.error(err);
+        });
+    },
     async getData() {
-      var todosRef = await db
+      var memberRef = await db
         .collection("membersAuth")
         .doc(firebase.auth().currentUser.uid)
         .collection("members");
 
-      todosRef.onSnapshot((snapshotChange) => {
+      memberRef.onSnapshot((snapshotChange) => {
         this.data = [];
         snapshotChange.forEach((doc) => {
           let diff = moment(doc.data().date).diff(moment(), "milliseconds");
@@ -105,6 +149,7 @@ export default {
             key: doc.id,
             name: doc.data().name,
             date: doc.data().date,
+            isEdit: doc.data().isEdit,
             age: result,
           });
         });

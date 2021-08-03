@@ -13,24 +13,24 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+      import("../views/Login.vue"),
   },
   {
     path: "/register",
     name: "Register",
     component: () =>
-      import(/* webpackChunkName: "register" */ "../views/Register.vue"),
+      import("../views/Register.vue"),
   },
   {
-    path: "/process",
-    name: "Process",
+    path: "/member",
+    name: "Member",
     component: () =>
-      import(/* webpackChunkName: "process" */ "../views/Process.vue"),
+      import("../views/Member.vue"),
     meta: {
       authRequired: true,
     }
   },
-  
+
 ];
 
 const router = createRouter({
@@ -52,7 +52,6 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
 
 
 export default router;

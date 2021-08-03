@@ -1,15 +1,17 @@
 <template>
-  <div id="process">
+  <div id="member">
     <calculate-age />
   </div>
 </template>
 
 <script>
 import CalculateAge from "../components/CalculateAge.vue";
+
 export default {
-  name: "Process",
+  name: "Member",
   components: { CalculateAge },
 };
+
 </script>
 
 <style>

@@ -27,8 +27,7 @@ export default {
       .signInWithEmailAndPassword(this.email, this.password)
       .then(() => {
         alert('Successfully logged in');
-        this.isLoggedIn = true
-        this.$router.push('/process');
+        this.$router.push('/member');
       })
       .catch(error => {
         alert(error.message);
