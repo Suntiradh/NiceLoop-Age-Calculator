@@ -2,9 +2,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import firebase from 'firebase';
-import 'firebase/firestore';
-
+import firebase from "firebase";
+import "firebase/firestore";
 
 var firebaseConfig = {
   apiKey: "AIzaSyA_2ZhAdJDrQji_uRIr1YHoYHxY1MEfvMQ",
@@ -13,16 +12,18 @@ var firebaseConfig = {
   storageBucket: "age-calculator-97e0d.appspot.com",
   messagingSenderId: "555925692155",
   appId: "1:555925692155:web:011fb127cdd98299249a5e",
-  measurementId: "G-W6NH71JYNF"
+  measurementId: "G-W6NH71JYNF",
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const db = firebaseApp.firestore();
+
 let app;
-firebase.auth().onAuthStateChanged(user => {
-  console.log(` this is an ${user}`)
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    store.dispatch("autoSignIn", user);
+  }
   if (!app) {
     app = createApp(App).use(store).use(router).mount("#app");
   }
-})
-
+});

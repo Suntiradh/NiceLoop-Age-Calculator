@@ -10,29 +10,16 @@
 </template>
 
 <script>
-import firebase from "firebase";
-
 
 export default {
   name: "App",
   methods: {
     logout() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          alert("Successfully logged out");
-          this.$router.push("/");
-        })
-        .catch((error) => {
-          alert(error.message);
-          this.$router.push("/");
-        });
+      this.$store.dispatch('userSignOut')
     },
   },
 };
 </script>
-
 
 <style>
 /* #app {

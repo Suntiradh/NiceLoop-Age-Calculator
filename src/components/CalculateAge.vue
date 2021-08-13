@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="memberData in data" :key="memberData.key">
+        <tr v-for="memberData in testData" :key="memberData.key">
           <td>
             <p v-if="!memberData.isEdit">{{ memberData.name }}</p>
             <input v-else v-model="memberData.name" />
@@ -70,10 +70,8 @@
 </template>
 
 <script>
-import { db } from ".././main";
 import moment from "moment";
 import format from "moment-duration-format";
-import firebase from "firebase";
 
 format(moment);
 
@@ -85,76 +83,49 @@ export default {
       today: moment().format("YYYY-MM-DD"),
     };
   },
-  created() {
-    this.getData();
+  mounted() {
+    this.$store.dispatch("getData")
+  },
+  computed: {
+    testData() {
+      return this.$store.state.data
+    }
+    // testData2: {
+    //   get() {
+    //     return this.$store.state.data
+    //   },
+    //   set() {
+    //     return this.$store.state.data
+    //   },
+    //   deep: true
+    // }
   },
   methods: {
     addMember() {
-      db.collection("membersAuth")
-        .doc(firebase.auth().currentUser.uid)
-        .collection("members")
-        .add({
-          name: this.member.name,
-          date: this.member.date,
-          isEdit: false,
-        });
+      this.$store.dispatch("addMember", {
+        name: this.member.name,
+        date: this.member.date,
+      });
       this.member.name = "";
       this.member.date = "";
     },
     setUpdate(memberData) {
-      db.collection("membersAuth")
-        .doc(firebase.auth().currentUser.uid)
-        .collection("members")
-        .doc(memberData.key)
-        .update({
-          isEdit: true,
-        });
-    },
-    updateMember(memberData) {
-      db.collection("membersAuth")
-        .doc(firebase.auth().currentUser.uid)
-        .collection("members")
-        .doc(memberData.key)
-        .update({
-          name: memberData.name,
-          date: memberData.date,
-          isEdit: false,
-        })
-        .then(alert("Updated"));
-    },
-    deleteMember(id) {
-      db.collection("membersAuth")
-        .doc(firebase.auth().currentUser.uid)
-        .collection("members")
-        .doc(id)
-        .delete()
-        .then(alert("Delete Member Complete"))
-        .catch((err) => {
-          console.error(err);
-        });
-    },
-    async getData() {
-      var memberRef = await db
-        .collection("membersAuth")
-        .doc(firebase.auth().currentUser.uid)
-        .collection("members");
-
-      memberRef.onSnapshot((snapshotChange) => {
-        this.data = [];
-        snapshotChange.forEach((doc) => {
-          let diff = moment(doc.data().date).diff(moment(), "milliseconds");
-          let duration = moment.duration(diff);
-          let result = duration.format().replace("-", "");
-          this.data.push({
-            key: doc.id,
-            name: doc.data().name,
-            date: doc.data().date,
-            isEdit: doc.data().isEdit,
-            age: result,
-          });
-        });
+      this.$store.dispatch("setUpdateMember", {
+        key: memberData.key,
       });
     },
+    async updateMember(memberData) {
+      this.$store.dispatch("updateMember", {
+        name: memberData.name,
+        date: memberData.date,
+        key: memberData.key,
+      });
+    },
+    deleteMember(id) {
+      this.$store.dispatch("deleteMember", {
+        id: id,
+      });
+    }
   },
 };
 </script>

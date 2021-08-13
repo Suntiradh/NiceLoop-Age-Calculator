@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import firebase from "firebase";
 
 export default {
   name: "Login",
@@ -22,16 +21,10 @@ export default {
   },
   methods: {
   login() {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.email, this.password)
-      .then(() => {
-        alert('Successfully logged in');
-        this.$router.push('/member');
-      })
-      .catch(error => {
-        alert(error.message);
-      });
+    this.$store.dispatch('userLogin', {
+      email: this.email,
+      password: this.password
+    })
   },
 },
 };

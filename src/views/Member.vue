@@ -1,6 +1,6 @@
 <template>
   <div id="member">
-    <calculate-age />
+    <calculate-age v-if="this.$store.state.user !== null"/>
   </div>
 </template>
 
