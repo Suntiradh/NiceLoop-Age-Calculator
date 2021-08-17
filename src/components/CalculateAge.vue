@@ -84,12 +84,12 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("getData")
+    this.$store.dispatch("getData");
   },
   computed: {
     testData() {
-      return this.$store.state.data
-    }
+      return this.$store.state.data;
+    },
     // testData2: {
     //   get() {
     //     return this.$store.state.data
@@ -114,7 +114,7 @@ export default {
         key: memberData.key,
       });
     },
-    async updateMember(memberData) {
+    updateMember(memberData) {
       this.$store.dispatch("updateMember", {
         name: memberData.name,
         date: memberData.date,
@@ -125,7 +125,7 @@ export default {
       this.$store.dispatch("deleteMember", {
         id: id,
       });
-    }
+    },
   },
 };
 </script>
