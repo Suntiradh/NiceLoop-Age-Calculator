@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import firebase from "firebase";
 import "firebase/firestore";
+import './index.css'
 
 var firebaseConfig = {
   apiKey: "AIzaSyA_2ZhAdJDrQji_uRIr1YHoYHxY1MEfvMQ",

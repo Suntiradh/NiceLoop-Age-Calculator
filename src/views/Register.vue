@@ -2,9 +2,9 @@
   <div id="register">
     <form @submit.prevent="register">
       <h2>Register</h2>
-      <input type="email" placeholder="Email address..." v-model="email" />
-      <input type="password" placeholder="password..." v-model="password" />
-      <button type="submit">Register</button>
+      <input class="w-full rounded-lg p-1 m-2" type="email" placeholder="Email address..." v-model="email" />
+      <input class="w-full rounded-lg p-1 m-2" type="password" placeholder="password..." v-model="password" />
+      <button class="border-2 border-solid rounded-xl border-blue-400 bg-blue-100 p-1" type="submit">Register</button>
     </form>
   </div>
 </template>

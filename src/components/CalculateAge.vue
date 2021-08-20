@@ -1,71 +1,103 @@
 <template>
-  <div class="members">
-    <img
-      src="https://i.pinimg.com/originals/23/4b/6a/234b6a4f2e93ba13a7da8200eb43147e.jpg"
-      width="170"
-    />
-
-    <form @submit.prevent="addMember" class="form-member">
-      <h3>Add Member</h3>
+  <div id="member" class="pt-2">
+    <div class="w-full flex justify-center pb-2">
+      <img
+        src="https://i.pinimg.com/originals/23/4b/6a/234b6a4f2e93ba13a7da8200eb43147e.jpg"
+        width="170"
+      />
+    </div>
+    <h3 class="font-medium">Add Member</h3>
+    <form @submit.prevent="addMember" class="flex justify-center">
       <br />
       <hr />
       <br />
-      <div class="row">
-        <div class="column">
+      <div>
+        <div>
           <label>Name</label><br />
-          <input type="text" v-model="member.name" />
+          <input class="rounded-lg" type="text" v-model="member.name" />
         </div>
-        <div class="column">
+        <div>
           <label>Date of birth</label><br />
           <input
+            class="rounded-lg"
             type="date"
             style="padding: 10px 20px"
             v-model="member.date"
             :max="today"
           />
         </div>
-        <div class="column">
-          <br />
-          <button type="submit">ADD</button>
+        <div class="py-2">
+          <button
+            class="
+              bg-blue-400
+              border-2 border-black border-solid
+              rounded-xl
+              px-4
+              py-2
+            "
+            type="submit"
+          >
+            ADD
+          </button>
         </div>
       </div>
     </form>
-    <table
-      align="center"
-      style="text-align: left; width: 80%; border-spacing: 0"
-    >
-      <thead>
-        <tr>
-          <th style="width: 30%">Name</th>
-          <th style="width: 35%">Date of Birth</th>
-          <th style="width: 35%">Age</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="memberData in testData" :key="memberData.key">
-          <td>
-            <p v-if="!memberData.isEdit">{{ memberData.name }}</p>
-            <input v-else v-model="memberData.name" />
-          </td>
-          <td>
-            <p v-if="!memberData.isEdit">{{ memberData.date }}</p>
-            <input v-else v-model="memberData.date" />
-          </td>
-          <td>
-            <p>{{ memberData.age }}</p>
-          </td>
-          <td>
-            <button v-if="!memberData.isEdit" @click="setUpdate(memberData)">
+    <div class="overflow-x-auto">
+      <table class="table-fixed py-2">
+        <thead>
+          <tr>
+            <th class="w-auto">Name</th>
+            <th class="w-1/2">Date of Birth</th>
+            <th class="w-full">Age</th>
+          </tr>
+        </thead>
+        <tbody v-for="memberData in testData" :key="memberData.key">
+          <tr class="border-t-2 border-1">
+            <td>
+              <p v-if="!memberData.isEdit">{{ memberData.name }}</p>
+              <input
+                class="w-3/4 rounded-lg p-1"
+                v-else
+                v-model="memberData.name"
+              />
+            </td>
+            <td>
+              <p v-if="!memberData.isEdit">{{ memberData.date }}</p>
+              <input
+                class="w-full rounded-lg p-1"
+                v-else
+                v-model="memberData.date"
+              />
+            </td>
+            <td>
+              <p>{{ memberData.age }}</p>
+            </td>
+          </tr>
+          <div class="flex">
+            <button
+              class="border-2 border-solid rounded-xl border-yellow-400 p-1"
+              v-if="!memberData.isEdit"
+              @click="setUpdate(memberData)"
+            >
               Edit
             </button>
-            <button v-else @click="updateMember(memberData)">Done</button>
-          </td>
-          <td>
-            <button @click="deleteMember(memberData.key)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <button
+              class="border-2 border-solid rounded-xl border-green-400 p-1"
+              v-else
+              @click="updateMember(memberData)"
+            >
+              Done
+            </button>
+            <button
+              class="border-2 border-solid rounded-xl border-red-400 p-1"
+              @click="deleteMember(memberData.key)"
+            >
+              Delete
+            </button>
+          </div>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -131,30 +163,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.row {
-  display: flex;
-  justify-content: center;
-}
-.column {
-  flex-grow: 1;
-  height: 100px;
-}
-.form-member input {
-  width: 80%;
-  border: 1px solid #dddddd;
-  padding: 12px 20px;
-}
-button[type="submit"] {
-  border: 1px solid #dddddd;
-  padding: 12px;
-  background-color: #5d9ced;
-  color: white;
-  width: 65%;
-  border-radius: 10px;
-}
-table th {
-  border-bottom: 1px solid #a29c9c;
-  padding-bottom: 10px;
-}
-</style>
+<style scoped></style>
